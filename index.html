@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas de Multiplicar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/css/all.min.css">
+
+
+    <!-- Estilos personalizados -->
+    <style>
+        .correct { color: green; }
+        .incorrect { color: red; }
+        .container { max-width: 600px; margin-top: 20px; }
+        .resultado { margin-top: 20px; }
+        .respuesta-correcta { font-weight: bold; color: blue; }
+  
+        /* Estilos adicionales */
+        .dark-mode {
+            background-color: #181818;
+            color: #f5f5f5;
+        }
+
+        .light-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .theme-icon {
+            cursor: pointer;
+        }
+
+        /* Cambios para asegurarse de que el modo claro y oscuro ajusten colores de fondo y texto correctamente */
+        .dark-mode .bg-light {
+            background-color: #000000 !important;
+            color: #f5f5f5 !important;
+        }
+
+        .light-mode .bg-dark {
+            background-color: #f8f9fa !important;
+            color: #000 !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container text-center">
+        <div class="d-flex justify-content-end">
+            <i id="themeToggle" class="fas fa-sun theme-icon" style="font-size: 24px;"></i>
+        </div>
+        <h1>Tablas de Multiplicar</h1>
+
+        <!-- Selección de la tabla -->
+        <div class="mb-3">
+            <label for="tablaSelect" class="form-label">Selecciona la tabla:</label>
+            <select id="tablaSelect" class="form-select">
+                <option value="">-- Seleccionar --</option>
+                <!-- Opciones de las tablas de multiplicar del 1 al 10 -->
+            </select>
+        </div>
+
+        <!-- Área de operación -->
+        <div id="operacion" class="mb-3" style="display: none;">
+            <p id="pregunta"></p>
+            <input type="number" id="respuesta" class="form-control" placeholder="Ingresa tu respuesta" required>
+            <button id="validarBtn" class="btn btn-primary mt-2">Validar</button>
+            <p id="feedback"></p>
+        </div>
+
+        <!-- Botón siguiente -->
+        <button id="siguienteBtn" class="btn btn-success mt-3" style="display: none;">Siguiente</button>
+
+        <!-- Resultado final -->
+        <div id="resultadoFinal" class="resultado"></div>
+
+        <!-- Modal de ayuda -->
+        <button type="button" class="btn btn-info mt-4" data-bs-toggle="modal" data-bs-target="#modalAyuda">
+            Ayuda
+        </button>
+        <div class="modal fade" id="modalAyuda" tabindex="-1" aria-labelledby="modalAyudaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAyudaLabel">Ayuda</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Elige una tabla de multiplicar del 1 al 10. Se te mostrará cada operación una por una. Ingresa tu respuesta y presiona "Validar". Si es correcta, se marcará como correcta; si es incorrecta, se te indicará la respuesta correcta. Después de cada respuesta, presiona "Siguiente" para continuar. Al finalizar, podrás ver un resumen de tus respuestas.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="app.js"></script>
+    <!-- Código JS para el cambio de tema -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            // Detectar si el usuario ya tiene una preferencia en localStorage
+            const userTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+            const currentTheme = userTheme || systemTheme;
+
+            // Aplicar el tema al cargar la página
+            if (currentTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                body.classList.add('light-mode');
+                themeToggle.classList.replace('fa-moon', 'fa-sun');
+            }
+
+            // Cambiar tema al presionar el ícono
+            themeToggle.addEventListener('click', function() {
+                if (body.classList.contains('light-mode')) {
+                    // Cambiar a modo oscuro
+                    body.classList.replace('light-mode', 'dark-mode');
+                    themeToggle.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    // Cambiar a modo claro
+                    body.classList.replace('dark-mode', 'light-mode');
+                    themeToggle.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
