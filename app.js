@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${item.respuestaUsuario}</td>
                 <td>${item.esCorrecto ? '<span class="correct">Correcto ✅</span>' : '<span class="incorrect">Incorrecto ❌</span> <span class="respuesta-correcta">(Correcta: ' + item.resultadoCorrecto + ')</span>'}</td>
             </tr>`;
+
+            guardarResultado(item.operacion, item.respuestaUsuario, item.esCorrecto ? 'Correcto' : 'Incorrecto');
         });
 
         htmlResultados += '</tbody></table>';
